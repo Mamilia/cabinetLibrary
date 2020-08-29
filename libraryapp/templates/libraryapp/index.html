@@ -1,0 +1,10 @@
+{% extends "libraryapp/layout.html" %} {% block title %}The Cabinet Library
+{%endblock%} {% block body %}
+<div id="category">
+  {% if categories %} {% for category in categories %}
+  <div class="category">
+    <a href="{% url 'category' category.id %}"> {{ category.name }}</a>
+  </div>
+  {% endfor %} {% endif %}
+</div>
+{% endblock %}
