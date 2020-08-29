@@ -1,0 +1,91 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link href="{% static 'libraryapp/styles.css' %}" rel="stylesheet" />
+    <link href="{% static 'libraryapp/lightbox.min.css' %}" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="{% url 'index' %}">The Cabinet Library</a>
+
+      <div>
+        <ul class="navbar-nav mr-auto">
+          {% if category_obj %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'category' category_obj.id %}"
+              >{{category_obj.name}}</a
+            >
+          </li>
+          {% endif %} {% if user.is_authenticated %}
+       
+          <li class="nav-item" style="margin-left: 2em;">
+            <strong>{{ user.username }}</strong>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" style="margin-left: 2em;" href="{% url 'logout' %}">Log Out</a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Log In</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'register' %}">Register</a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+
+    <div class="body">{% block body %} {% endblock %}</div>
+    {% block pagination-buttons %}
+    <div class="pagination" style="margin-bottom: 20px;">
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          {% if items.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ items.previous_page_number }}">&laquo; Prev</a>
+          </li>
+          {% endif %} {% if show_first %}
+          <li class="page-item"><a href="?page=1">1</a></li>
+          <li class="ellipsis">...</li>
+          {% endif %} {% for linkpage in items.paginator.page_range %}
+          <div></div>
+          {% ifequal linkpage items.number %}
+          <li class='current page-link'>{{ items.number }}</li>
+          {% else %}
+          <li class="page-item"></li>
+            <a class="page-link" href="?page={{ linkpage }}">{{ linkpage }}</a>
+          </li>
+          {% endifequal %} {% endfor %} {% if show_last %}
+          <li class="ellipsis">...</li>
+          <li class="page-item">
+            <a class="page-link" href="?page=last">{{ items.paginator.num_pages }}</a>
+          </li>
+          {% endif %} {% if items.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ items.next_page_number }}">Next &raquo;</a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div> 
+    {% endblock %} {% block scripts %}
+    <div></div>
+    {%endblock %}
+    <script type="text/javascript"></script>
+    <script></script>
+  </body>
+</html>

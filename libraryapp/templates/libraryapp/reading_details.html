@@ -1,0 +1,155 @@
+{% extends "libraryapp/layout.html" %}{% load static %}{% block title %}The
+Cabinet Library {%endblock%} {% block body %}
+<div id="reading_detail">
+  <div id="info">
+    <em id="title">{{ reading_obj.title }}</em>
+    <div class="image">
+      {% if reading_obj.cover %}
+      <a href="http://127.0.0.1:8000{{reading_obj.cover}}">
+        <img src="{{reading_obj.cover}}" alt="{{reading_obj.title}}" />
+      </a>
+      {% else %}
+      <span class="text-muted">No Cover</span>
+      {% endif%}
+    </div>
+    <br />Author: {{ reading_obj.author }} <br />
+    Year of publication: {{ reading_obj.year }}<br />
+    {% if request.user in reading_obj.liked_readings.all %}
+    <div id="banana_btn">
+      <form action="#" method="PUT">
+        {% csrf_token %}
+        <div id="banana_like">
+          <img
+            style="opacity: 1;"
+            id="banana_img"
+            src="{% static '/libraryapp/images/bananaa.png' %}"
+            alt="banana"
+          />
+        </div>
+      </form>
+      <small>x</small
+      ><small id="count_banana">{{reading_obj.liked_readings.all.count}}</small>
+    </div>
+    <script type="text/javascript">
+      let bananalike = true;
+    </script>
+    {% else %}
+    <div id="banana_btn">
+      <form action="#" method="PUT">
+        {% csrf_token %}
+        <div id="banana_like">
+          <img
+            style="opacity: 0.3;"
+            id="banana_img"
+            src="{% static '/libraryapp/images/bananaa.png' %}"
+            alt="banana"
+          />
+        </div>
+      </form>
+      <small>x</small
+      ><small id="count_banana">{{reading_obj.liked_readings.all.count}}</small>
+    </div>
+    <script type="text/javascript">
+      let bananalike = false;
+    </script>
+    {% endif %}
+    <div id="reading_btns" style="display: inline;">
+      <a
+        href="{{ reading_obj.pdf }}"
+        target="_blank"
+        class="downloadBtn btn btn-default"
+        >Download</a
+      >
+      {% if request.user == reading_obj.user %}
+      <form
+        method="POST"
+        action="{% url 'delete_reading' category_obj.id subcategory_obj.id reading_obj.id %}"
+      >
+        {% csrf_token %}
+        <button
+          style="margin-left: 90%;"
+          type="submit"
+          class="btn btn-danger btn-sm"
+        >
+          Delete
+        </button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+
+  <div id="reviews">
+    <div id="user_reviews">
+      <br />
+      <div id="posted_review">
+        <form action="#" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="form-group">
+            <textarea
+              style="width: 90%; margin: auto;"
+              name="review"
+              class="form-control"
+              id="exampleFormControlTextarea1"
+              rows="5"
+              maxlength="400"
+            ></textarea>
+            <small style="margin-left: 7%; opacity: 0.7;"
+              >Write a review about this text</small
+            >
+          </div>
+          <br />
+          <button type="button" id="upload_image" class="btn btn-default">
+            <input type="file" name="image_review" />
+            <i class="fa fa-lg fa-picture-o" aria-hidden="true"></i>
+          </button>
+          {% if fileUrl %}
+          <p>Uploaded file:<a href="{{fileUrl}}">{{fileUrl}}</a></p>
+          {% endif %}
+          <button class="btn btn-default" type="submit">Send</button>
+        </form>
+      </div>
+    </div>
+    <div id="old_reviews">
+      <center><strong class="title">Reviews</strong></center>
+      {% for review in items %}
+      <div class="review_posted" id="{{review.id}}">
+        <span class="title"><p>{{ review.user.username }}:</p></span>
+        {% if review.image %}
+        <a href="http://127.0.0.1:8000{{review.image}}">
+          <img style="width: 40%;" src="{{review.image}}" class="image"
+        /></a>
+        {% else %}
+        <div></div>
+        {% endif %}
+        <p>{{ review.content }}</p>
+        {% if request.user == review.user %}
+        <div class="buttons">
+          <button type="button" class="edit-btn btn btn-default">
+            Edit
+          </button>
+          <button type="button" class="delete-btn btn btn-danger">
+            Delete
+          </button>
+        </div>
+        {% endif %}
+        <div class="timestamp">{{ review.date }}</div>
+        <p>........................................</p>
+      </div>
+      {% empty %}
+      <p>There are no reviews for this book</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{%endblock%} {% block scripts %}
+
+<script type="text/javascript">
+  const subcategoryId = `{{ subcategory_obj.id  }}`;
+  const categoryId = `{{ category_obj.id }}`;
+  const readingId = `{{ reading_obj.id }}`;
+</script>
+<script
+  type="text/javascript"
+  src="{% static  'libraryapp/reading_detail.js' %}"
+></script>
+{%endblock %}

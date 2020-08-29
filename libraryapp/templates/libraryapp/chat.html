@@ -1,0 +1,77 @@
+{% extends "libraryapp/layout.html" %}{% load static %} {% block title %}The
+Cabinet Library {%endblock%} {% block body %}
+
+<center>
+  <div class="subcategory_object">{{ subcategory_obj.name }}</div>
+</center> </br>
+<div class="form">
+  <form
+    action="{% url 'subcategory' category_obj.id subcategory_obj.id %}"
+    method="post"
+    enctype="multipart/form-data"
+  >
+    {% csrf_token %}
+    <textarea
+      class="form-control"
+      rows="3"
+      placeholder="Type here"
+      name="post"
+      id="post"
+      maxlength="250"
+      required
+    ></textarea>
+    <small id="character" class="form-text text-muted"
+      >Limit 250 characteres</small
+    >
+
+    <button type="button" id="upload_image" class="btn btn-default">
+      <input type="file" name="image_post" />
+      <i class="fa fa-lg fa-picture-o" aria-hidden="true"></i>
+    </button>
+    {% if fileUrl %}
+    <p>Uploaded file:<a href="{{fileUrl}}">{{fileUrl}}</a></p>
+    {% endif %}
+    <button type="submit" class="btn btn-default">Post</button>
+  </form>
+</div>
+
+{% if items %}
+<div>
+  {% for post in items %}
+  <div class="post" id="{{post.id}}">
+    <div class="subject">
+      <span>{{ post.user }}:</span>
+    </div>
+    {% if post.image %}
+    <a href="http://127.0.0.1:8000{{post.image}}" >
+      <img style="width: 50%;" src="{{post.image}}" alt="{{post.title}}" title="{{post.title}}" ></img>
+    </a>
+    {% else %}
+    <div></div>
+    {% endif %}
+    <div class="body">{{ post.content }}</div>
+    <div class="timestamp">{{ post.date }}</div>
+    {% if request.user == post.user %}
+    <div class="buttons">
+      <button type="button" class="edit-btn btn btn-default">
+        Edit
+      </button>
+      <button type="button" class="delete-btn btn btn-danger">
+        Delete
+      </button>
+    </div>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p>No posts here</p>
+{%endif%} {%endblock%}  {% block scripts %}
+<script type="text/javascript">
+  const userId = `{{ request.user.id }}`;
+</script>
+<script
+  type="text/javascript"
+  src="{% static  'libraryapp/post.js' %}"
+></script>
+{% endblock %}

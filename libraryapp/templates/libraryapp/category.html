@@ -1,0 +1,166 @@
+{% extends "libraryapp/layout.html" %}{% load static %}{% block title %}The
+Cabinet Library {%endblock%} {% block body %}
+<div class="nav">
+  <div id="category">
+    {% if categories %} {% for category in categories %}
+    <div class="category">
+      <a href="{% url 'category' category.id %}"> {{ category.name }}</a>
+      {% if category.id == category_obj.id %}
+      <span>>>>></span>
+      {% endif %}
+    </div>
+    {% endfor %} {% endif %}
+  </div>
+  {% if subcategories %}
+  <div id="subcategory" style="margin-top:{{category_obj.id}}em;">
+    {% for subcategory in subcategories %}
+    <div class="subcategory">
+      <a href="{% url 'subcategory' category_obj.id subcategory.id %}">
+        {{ subcategory.name }}</a
+      >
+    </div>
+    {% endfor %}
+  </div>
+  <div class="create">
+    <button class="btn btn-default" id="addSubcategory">
+      Add new subcategory +
+    </button>
+    {% if category_obj.id == 1 %}
+    <button class="btn btn-default" id="searchBtn">
+      Search
+    </button>
+    {% endif %}
+    <form
+      action="{% url 'category' category_obj.id %}"
+      method="post"
+      id="newSubcategory"
+    >
+      {% csrf_token %}
+      <input
+        name="newNameSubcategory"
+        class="form-control m-2"
+        placeholder="type name"
+        maxlength="30"
+        required
+      />
+      <button type="submit" id="saveBtn" class="btn btn-default m2">
+        Save
+      </button>
+      <button type="button" id="cancelBtn" class="btn btn-default m2">
+        Cancel
+      </button>
+    </form>
+  </div>
+</div>
+{% endif %}
+<div id="searchEngine">
+  {% if category1 == 1 %}
+
+  <!-- search!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+  <div class="form" id="searchFormDiv">
+    <form action="{% url 'search' category_obj.id %}" id="searchForm">
+      <div class="form-check">
+        <input
+          type="radio"
+          value="value-title"
+          name="specific_search"
+          class="form-check-input"
+          id="Check1"
+        />
+        <label class="form-check-label" for="Check1">Title</label
+        >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input
+          type="radio"
+          value="value-author"
+          name="specific_search"
+          class="form-check-input"
+          id="Check2"
+        /><label class="form-check-label" for="Check2">Author</label
+        >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input
+          type="radio"
+          value="value-year"
+          name="specific_search"
+          class="form-check-input"
+          id="Check3"
+        />
+        <label class="form-check-label" for="Check3">Year</label>
+      </div>
+      <br />
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control"
+          id="search"
+          name="q"
+          value="{{request.GET.q}}"
+          placeholder="Global Search"
+        />
+        <small class="form-text text-muted">
+          check the box first for a more precise search</small
+        >
+        <br />
+        <button class="btn btn-default" type="submit">Search</button>
+      </div>
+    </form>
+  </div>
+  <div class="search_results" id="results">
+    <p>
+      Documents found: {{ count }}
+    </p>
+    <table>
+      <tr>
+        <th class="th">Cover</th>
+        <th class="th">Title</th>
+        <th class="th">Author</th>
+        <th class="th">Link</th>
+      </tr>
+      {% if items %} {% for reading in items %}
+      <div class="readingDiv">
+        <a href="#" class="readingDiv">
+          <tr
+            class="readingTr"
+            data-href="{% url 'reading' category_obj.id reading.subcategory.id reading.id %}"
+          >
+            <td>
+              {% if reading.cover %}
+              <a href="http://127.0.0.1:8000{{reading.cover}}">
+                <img
+                  src="{{reading.cover}}"
+                  alt="{{reading.title}}"
+                  style="width: 90px;"
+                />
+              </a>
+              {% else %}
+              <span class="text-muted">No Cover</span>
+              {% endif%}
+            </td>
+            <td>{{ reading.title }}</td>
+            <td>{{reading.author}}</td>
+            <td>
+              <a
+                href="{{ reading.pdf }}"
+                target="_blank"
+                class="downloadBtn btn btn-default btn-sm"
+                >Download</a
+              >
+            </td>
+          </tr>
+        </a>
+      </div>
+      {% endfor %} {% endif %}
+    </table>
+  </div>
+</div>
+<!-- search!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+{% endif %} {% if request.message %}
+<div>{{request.message}}</div>
+{% endif %} {%endblock%} {% block scripts %}
+<script type="text/javascript">
+  const categoryId = `{{ category_obj.id }}`;
+</script>
+<script
+  type="text/javascript"
+  src="{% static  'libraryapp/category.js' %}"
+></script>
+{% endblock %}

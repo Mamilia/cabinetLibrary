@@ -1,0 +1,25 @@
+<div class="pagination">
+  {% if items.has_previous %}
+  <span class="page">
+    <a href="?page={{ articles.previous_page_number }}">&laquo; Prev</a>
+  </span>
+  {% endif %} {% if show_first %}
+  <span class="page"><a href="?page=1">1</a></span>
+  <span class="ellipsis">...</span>
+  {% endif %} {% for linkpage in items.paginator.page_range %}
+  <div></div>
+  {% ifequal linkpage items.number %}
+  <span class="current">{{ articles.number }}</span>
+  {% else %}
+  <span class="page"><a href="?page={{ linkpage }}">{{ linkpage }}</a></span>
+  {% endifequal %} {% endfor %} {% if show_last %}
+  <span class="ellipsis">...</span>
+  <span class="page"
+    ><a href="?page=last">{{ articles.paginator.num_pages }}</a></span
+  >
+  {% endif %} {% if items.has_next %}
+  <span class="page"
+    ><a href="?page={{ articles.next_page_number }}">Next &raquo;</a></span
+  >
+  {% endif %}
+</div>

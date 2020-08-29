@@ -1,0 +1,62 @@
+{% extends "libraryapp/layout.html" %}{% load static %}{% block title %}The Cabinet Library
+{%endblock%} {% block body %} {% if subcategory_obj %}
+<center><div class="subcategory_object">{{ subcategory_obj.name }}</div></center>
+
+<button class="btn btn-default" id="addBtn">
+    Add a new image to <span>{{ subcategory_obj.name }}</span>
+  </button>
+  <div class="form" id="uploadFormDiv">
+    <center>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <tr>
+          <th><label>Title:</label></th>
+          <td>
+            <input type="text" name="title" maxlength="80" required />
+          </td>
+        </tr></br>
+          <th><label>Image:</label></th>
+          <td><input type="file" name="image" required/></td>
+        </tr></br>
+        <tr>
+          <th><label>Description:</label></th>
+          <td>
+            <input type="text" name="description" maxlength="400"  />
+          </td>
+        </tr></br>
+        <button class="btn btn-default" type="submit" id="uploadBtn">
+          Upload file
+        </button>
+      </form>
+    </center>
+  
+    {% if fileUrl %}
+    <p>Uploaded file:<a href="{{fileUrl}}">{{fileUrl}}</a></p>
+    {% endif %}
+  </div>
+    <div class="container gallery">
+        <div class="row">
+        {% for image in items %}
+            <div class="images col-3">
+                <h5>{{ image.title }}</h5>
+        <a href="http://127.0.0.1:8000{{image.image}}" data-lightbox='gallery' data-title="{{image.title}}" >
+                <img style="width: 100%;" src="{{image.image}}" alt="{{image.title}}" title="{{image.title}}" ></img>
+                </a>
+                <p> {{image.description}} </p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {%else%}
+<div>No subcategory</div>
+{%endif%}{%endblock%}
+{% block scripts %}
+<script
+  type="text/javascript"
+  src="{% static  'libraryapp/addSubcategory.js' %}"
+></script>
+<script
+  type="text/javascript"
+  src="{% static  'libraryapp/lightbox-plus-jquery.min.js' %}"
+></script>
+{%endblock %}

@@ -1,0 +1,55 @@
+{% extends "libraryapp/layout.html" %}{% load static %}{% block title %}The Cabinet Library
+{%endblock%} {% block body %} {% if subcategory_obj %}
+<div class="subcategory_object">{{ subcategory_obj.name }}</div>
+<button class="btn btn-default" id="addBtn">
+  Add a new video to <span><strong> {{ subcategory_obj.name }}: </strong></span>
+</button>
+<div class="form" id="uploadFormDiv">
+  <center>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <tr>
+          <th><label>Title:</label></th>
+          <td>
+            <input type="text" name="title" maxlength="80" required />
+          </td>
+        </tr></br>
+          <th><label>Video Link:</label></th>
+          <td><input type="text" name="video_link" required /></td>
+        </tr></br>
+        <tr>
+          <th><label>Description:</label></th>
+          <td>
+            <input type="text" name="description" maxlength="400" required />
+          </td>
+        </tr></br>
+        <button class="btn btn-default" type="submit" id="uploadBtn">
+          Upload file
+        </button>
+      </form>
+    </center>
+  {% if fileUrl %}
+  <p>Uploaded file:<a href="{{fileUrl}}">{{fileUrl}}</a></p>
+  {% endif %}
+</div>
+<div class="container">
+    <div class="">
+    {% for video in items %}
+        <div class="videos">
+            <h4>{{ video.title }}</h4>
+            <iframe width="100%" height="315" src="{{video.link}}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </iframe>
+            <p> {{video.description}} </p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{%else%}
+<div>No subcategory</div>
+{%endif%} {%endblock%}
+{% block scripts %}
+<script
+  type="text/javascript"
+  src="{% static  'libraryapp/addSubcategory.js' %}"
+></script>
+{%endblock %}

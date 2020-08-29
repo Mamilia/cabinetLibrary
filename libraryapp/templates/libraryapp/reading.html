@@ -1,0 +1,152 @@
+{% extends "libraryapp/layout.html" %}{% load static %}{% block title %}The
+Cabinet Library {%endblock%} {% block body %} {% if subcategory_obj %}
+
+<div class="subcategory_object">{{ subcategory_obj.name }}</div>
+
+<button class="btn btn-default" id="addBtn">
+  Add a new reading to <span> {{ subcategory_obj.name }}: </span>
+</button>
+<div class="form" id="uploadFormDiv">
+  <center>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <tr>
+        <th><label>Title:</label></th>
+        <td>
+          <input type="text" name="title" maxlength="80" required />
+        </td>
+      </tr></br>
+      <tr>
+        <th><label>Author:</label></th>
+        <td>
+          <input type="text" name="author" maxlength="80" required />
+        </td>
+      </tr></br>
+      <tr>
+        <th><label>Year:</label></th>
+        <td>
+          <input type="text" name="year" maxlength="80" required />
+        </td>
+      </tr></br>
+      <tr>
+        <th><label>File:</label></th>
+        <td><input type="file" name="pdf" required /></td>
+      </tr></br>
+      <tr>
+        <th><label>Cover:</label></th>
+        <td><input type="file" name="cover" /></td>
+      </tr>
+      <button class="btn btn-default" type="submit" id="uploadBtn">
+        Upload file
+      </button>
+    </form>
+  </center>
+
+  {% if fileUrl %}
+  <p>Uploaded file:<a href="{{fileUrl}}">{{fileUrl}}</a></p>
+  {% endif %}
+</div>
+<button class="btn btn-default" id="searchBtn">Search</button>
+<!-- search!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+<div class="form" id="searchFormDiv">
+  <form action="{% url 'search_subcategoy' category_obj.id subcategory_obj.id %}" id="searchForm">
+    <div class="form-check">
+      <input
+        type="radio"
+        value="value-title"
+        name="specific_search"
+        class="form-check-input"
+        id="Check1"
+      />
+      <label class="form-check-label" for="Check1">Title</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <input
+        type="radio"
+        value="value-author"
+        name="specific_search"
+        class="form-check-input"
+        id="Check2"
+      /><label class="form-check-label" for="Check2">Author</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <input
+        type="radio"
+        value="value-year"
+        name="specific_search"
+        class="form-check-input"
+        id="Check3"
+      />
+      <label class="form-check-label" for="Check3">Year</label>
+    </div>
+    <br />
+    <div class="form-group">
+      <input
+        type="text"
+        class="form-control"
+        id="search"
+        name="q"
+        value="{{request.GET.q}}"
+        placeholder="Specific Search"
+      />
+      <small class="form-text text-muted">
+        check the box first for a more precise search</small
+      >
+      <br />
+      <button class="btn btn-default" type="submit">Search</button>
+    </div>
+  </form>
+</div>
+<div class="search_results" id="results">
+  <p>
+    Documents found: {{ count }}
+  </p>
+  <table>
+    <tr>
+      <th class="th">Cover</th>
+      <th class="th">Title</th>
+      <th class="th">Author</th>
+      <th class="th">Link</th>
+    </tr>
+    {% if items %} {% for reading in items %}
+    <div class="readingDiv">
+      <a href="#" class="readingDiv">
+        <tr
+          class="readingTr"
+          data-href="{% url 'reading' category_obj.id reading.subcategory.id reading.id %}"
+        >
+          <td>
+            {% if reading.cover %}
+            <img
+              src="{{reading.cover}}"
+              alt="{{reading.title}}"
+              style="width: 100px;"
+            />
+            {% else %}
+            <span class="text-muted">No Cover</span>
+            {% endif%}
+          </td>
+          <td>{{ reading.title }}</td>
+          <td>{{reading.author}}</td>
+          <td>
+            <a
+              href="{{ reading.pdf }}"
+              target="_blank"
+              class="downloadBtn btn btn-default btn-sm"
+              >Download</a
+            >
+          </td>
+        </tr>
+      </a>
+    </div>
+
+    {% endfor %} {% endif %}
+  </table>
+</div>
+</div>
+<!-- search!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+
+{%else%}
+<div>No subcategory</div>
+{%endif%} {%endblock%} {% block scripts %}
+<script
+  type="text/javascript"
+  src="{% static  'libraryapp/reading.js' %}"
+></script>
+{%endblock %}
