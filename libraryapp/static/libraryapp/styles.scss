@@ -1,0 +1,219 @@
+$btn: #09944f;
+$target: #fdffc8;
+$search: #b0f9e5;
+body {
+  background-color: #a5d5bd;
+
+  .body {
+    background-color: #edffff;
+    width: 98%;
+    margin: 1em auto auto auto;
+    padding: 0.4em;
+    .nav {
+      display: flex;
+      #newSubcategory {
+        display: none;
+      }
+    }
+    #category {
+      margin: 0.4em;
+      background-color: $target;
+      border-radius: 0.4em;
+      float: left;
+      padding: 0.3em;
+    }
+    #subcategory {
+      margin: 0.4em;
+      background-color: $target;
+      border-radius: 0.4em;
+      padding: 0.3em;
+    }
+    #uploadFormDiv {
+      display: none;
+    }
+    #searchFormDiv {
+      display: none;
+    }
+    tr[data-href] {
+      cursor: pointer;
+    }
+    tr[data-href]:hover {
+      background-color: $target;
+    }
+    #results {
+      width: 100%;
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid darkgray;
+        border-radius: 4px;
+
+        tr {
+          border-radius: 4px;
+          th {
+            text-align: center;
+            padding-bottom: 10px;
+            padding-top: 10px;
+            border: 3px solid $btn;
+            background-color: $btn;
+            font-family: Arial, Helvetica, sans-serif;
+            font-style: italic;
+            font-size: medium;
+          }
+        }
+        tr {
+          border-radius: 4px;
+          td {
+            text-align: center;
+            padding-bottom: 10px;
+            padding-top: 10px;
+            border: 3px solid $btn;
+            background-color: rgba(224, 255, 234, 0.3);
+            font-family: Helvetica, sans-serif;
+            font-size: small;
+          }
+        }
+      }
+    }
+
+    .gallery img:hover {
+      filter: grayscale(30%);
+      transition: 1s;
+      transform: scale(1.03);
+    }
+  }
+
+  .images {
+    text-align: center;
+    margin: 1rem 2rem 0rem 2rem;
+  }
+
+  .videos {
+    text-align: center;
+    width: 80%;
+    margin: auto;
+    padding: 1rem;
+  }
+  span {
+    color: $btn;
+    font-weight: 700;
+  }
+  .form {
+    padding: 0.6em;
+    margin: auto;
+    border-radius: 4px;
+    background-color: #b0f9e5;
+    max-width: 60%;
+    min-width: 250px;
+    .btn {
+      margin: 2px auto 2px 80%;
+    }
+    #upload_image {
+      margin: 2px auto 2px 2px;
+      max-width: 40%;
+      min-width: 120px;
+    }
+  }
+  .post {
+    margin: auto;
+    max-width: 80%;
+    padding: 0.5em;
+    background-color: #e6ffd7;
+    border-radius: 2px;
+    border: 2px solid white;
+    .timestamp {
+      color: gray;
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-right: 20%;
+    }
+    .subject {
+      font-size: 1rem;
+      font-weight: 700;
+      padding-top: 5px;
+    }
+
+    .bodyText {
+      padding: 10px;
+      font-size: 0.9rem;
+      margin: auto;
+      width: 80%;
+      background-color: ivory;
+    }
+  }
+  .body-login {
+    margin: auto;
+    form {
+      margin: auto;
+      width: 50vh;
+    }
+  }
+
+  #reading_detail {
+    #info {
+      width: 60%;
+      margin-bottom: 10px;
+      margin: auto;
+      text-align: center;
+      img {
+        width: 40%;
+      }
+      #title {
+        font-size: 1.2rem;
+        font-weight: 600;
+      }
+      #reading_btns {
+        margin-left: 60%;
+      }
+
+      #banana_btn {
+        margin-left: -55%;
+      }
+      #banana_like img {
+        width: 50px;
+      }
+
+      #banana_img:hover {
+        opacity: 1;
+      }
+    }
+    #reviews {
+      width: 80%;
+      margin: auto;
+      margin-top: 10px;
+      background-color: #f1fff8;
+      #old_reviews {
+        padding: 10px;
+        text-align: left;
+        .timestamp {
+          color: gray;
+          font-size: 0.8rem;
+          font-weight: 500;
+          margin-right: 20%;
+        }
+      }
+    }
+    #user_reviews {
+      background-color: $search;
+      position: relative;
+      height: 320px;
+    }
+  }
+  .btn-default {
+    display: inline;
+    background-color: $btn;
+    color: azure;
+    margin: 0.3em;
+  }
+
+  .btn-default:hover {
+    background-color: #a2f3bd;
+  }
+
+  .pagination {
+    margin: 0.3em 0 0 0.3em;
+    .current {
+      background-color: #b0f9e5;
+    }
+  }
+}
