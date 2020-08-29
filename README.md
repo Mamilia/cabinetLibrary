@@ -4,10 +4,10 @@ This is a dynamic and responsive Django web application that works as a digital 
 
 In views.py:
 
-    -The subcategoy function is where the display of each category is defined as well as taking care of the POST methods of each form in them.
-    -The search and search_subcategoy functions are, respectively, a global and local search engine for the Reading Material's category.
-    -The pagination of each subcategory is imported from the config.py module, located in the .examples directory. The html for this is written in the layout.html module.
-    -The bananaLike, delete_reading, edit and editReview functions are handling the internal API calls of the readings likes, the delete of the readings, the edit of the posts and the edit of the readings reviews, respectively. These calls come from the fetch API promises written in the javascript's modules.
+-The subcategoy function is where the display of each category is defined as well as taking care of the POST methods of each form in them.
+-The search and search_subcategoy functions are, respectively, a global and local search engine for the Reading Material's category.
+-The pagination of each subcategory is imported from the config.py module, located in the .examples directory. The html for this is written in the layout.html module.
+-The bananaLike, delete_reading, edit and editReview functions are handling the internal API calls of the readings likes, the delete of the readings, the edit of the posts and the edit of the readings reviews, respectively. These calls come from the fetch API promises written in the javascript's modules.
 
 Users are also able to create their own subcategories in each of the 4 main categories. To start this website the admin must create the 4 main categories with their respective names as well as at least one subcategory per category.
 
